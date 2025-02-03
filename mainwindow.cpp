@@ -6,6 +6,17 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    tabWidget = new QTabWidget(this);
+
+    // Add tabs to the QTabWidget
+    tabWidget->addTab(new QWidget(), "Dashboard");
+    tabWidget->addTab(new QWidget(), "Topic Monitoring");
+    tabWidget->addTab(new QWidget(), "Consumer Groups");
+    tabWidget->addTab(new QWidget(), "Message Visualization");
+    tabWidget->addTab(new QWidget(), "Metrics & Performance");
+
+    // Set the QTabWidget as the central widget of the main window
+    this->setCentralWidget(tabWidget);
     setupMenu();
     this->setWindowTitle("Kafka Visualizer");
     this->setWindowState(Qt::WindowMaximized);
@@ -200,35 +211,35 @@ void MainWindow::deleteTopic()
 void MainWindow::switchToDashboard()
 {
     // Switch to the dashboard view
-    ui->tabWidget->setCurrentIndex(0); // Assuming the dashboard is the first tab
+    this->tabWidget->setCurrentIndex(0); // Assuming the dashboard is the first tab
     qDebug() << "Switched to Dashboard view.";
 }
 
 void MainWindow::switchToTopicMonitoring()
 {
     // Switch to the topic monitoring view
-    ui->tabWidget->setCurrentIndex(1); // Assuming topic monitoring is the second tab
+    this->tabWidget->setCurrentIndex(1); // Assuming topic monitoring is the second tab
     qDebug() << "Switched to Topic Monitoring view.";
 }
 
 void MainWindow::switchToConsumerGroups()
 {
     // Switch to the consumer group monitoring view
-    ui->tabWidget->setCurrentIndex(2); // Assuming consumer groups is the third tab
+    this->tabWidget->setCurrentIndex(2); // Assuming consumer groups is the third tab
     qDebug() << "Switched to Consumer Groups view.";
 }
 
 void MainWindow::switchToMessageVisualization()
 {
     // Switch to the message visualization view
-    ui->tabWidget->setCurrentIndex(3); // Assuming message visualization is the fourth tab
+    this->tabWidget->setCurrentIndex(3); // Assuming message visualization is the fourth tab
     qDebug() << "Switched to Message Visualization view.";
 }
 
 void MainWindow::switchToMetrics()
 {
     // Switch to the metrics and performance view
-    ui->tabWidget->setCurrentIndex(4); // Assuming metrics is the fifth tab
+    this->tabWidget->setCurrentIndex(4); // Assuming metrics is the fifth tab
     qDebug() << "Switched to Metrics & Performance view.";
 }
 
