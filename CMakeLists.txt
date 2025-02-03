@@ -43,6 +43,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         kakfaconsumer.h kakfaconsumer.cpp
         inireader.h inireader.cpp
+        config.ini
     )
 else()
     add_executable(Kafka-Visualizer

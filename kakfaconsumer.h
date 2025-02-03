@@ -1,6 +1,7 @@
 #ifndef KAKFACONSUMER_H
 #define KAKFACONSUMER_H
 #include <rdkafkacpp.h>
+#include "inireader.h"
 // #include <rdkafka.h>
 
 class CKafkaConsumer : public RdKafka::RebalanceCb , public RdKafka::EventCb

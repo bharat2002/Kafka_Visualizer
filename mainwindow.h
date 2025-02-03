@@ -2,7 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "inireader.h"
+#include <QMessageBox>
+#include <QMenuBar>
+#include <QFileDialog>
+#include <QInputDialog>
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -14,10 +18,35 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+    void saveConfiguration();
+    void loadConfiguration();
+    void connectToKafka();
+    void disconnectFromKafka();
+    void refreshMetadata();
+    void createTopic();
+    void deleteTopic();
+    void switchToDashboard();
+    void switchToTopicMonitoring();
+    void switchToConsumerGroups();
+    void switchToMessageVisualization();
+    void switchToMetrics();
+    void toggleDarkMode(bool enabled);
+    void produceTestMessage();
+    void modifyTopicConfiguration();
+    void showConsumerLagGraph();
+    void showThroughputGraph();
+    void viewNotifications();
+    void configureAlerts();
+    void openUserGuide();
+    void showAboutDialog();
 private:
+    IniReader* m_Config;
     Ui::MainWindow *ui;
+    QMenuBar* m_MenuBar= nullptr;
+    void setupMenu();
+    QTabWidget *tabWidget;
 };
 #endif // MAINWINDOW_H
