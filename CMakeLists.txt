@@ -9,55 +9,61 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Find Qt Widgets
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+# Include paths for librdkafka headers
+include_directories("C:/Users/bpali/Downloads/librdkafka.redist.2.8.0/build/native/include/librdkafka")
+# include_directories(D:/Projects/librdkafka/src)
+# set(LIBRDKAFKA_INCLUDE_DIR "D:/Projects/vcpkg/installed/x64-windows/include/librdkafka")  # Path to librdkafka headers
+# set(LIBRDKAFKA_LIB_DIR "D:/Projects/vcpkg/installed/x64-windows/debug/lib")  # Path to librdkafka libraries
+
+# Link directories for librdkafka libraries (ensure they match the build type: Debug/Release)
+# link_directories(D:/Projects/librdkafka/build/src/Debug)
+# include_directories(${LIBRDKAFKA_INCLUDE_DIR})
+# link_directories(${LIBRDKAFKA_LIB_DIR})
+
+link_directories("C:/Users/bpali/Downloads/librdkafka.redist.2.8.0/build/native/lib/win/x64/win-x64-Release/v142")
+
+# Define project sources
 set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
+    main.cpp
+    mainwindow.cpp
+    mainwindow.h
+    mainwindow.ui
+    kakfaconsumer.cpp
+    kakfaconsumer.h
 )
 
+# Add executable with manual finalization for Qt6
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Kafka-Visualizer
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        kakfaconsumer.h kakfaconsumer.cpp
+        inireader.h inireader.cpp
     )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET Kafka-Visualizer APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
 else()
-    if(ANDROID)
-        add_library(Kafka-Visualizer SHARED
-            ${PROJECT_SOURCES}
-        )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(Kafka-Visualizer
-            ${PROJECT_SOURCES}
-        )
-    endif()
+    add_executable(Kafka-Visualizer
+        ${PROJECT_SOURCES}
+    )
 endif()
 
-target_link_libraries(Kafka-Visualizer PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+# Link the libraries: librdkafka (C API) and rdkafka++ (C++ API)
+# Make sure the paths to the library files are correct.
+target_link_libraries(Kafka-Visualizer PRIVATE
+    Qt${QT_VERSION_MAJOR}::Widgets      # Link to the C API of librdkafka
+   "C:/Users/bpali/Downloads/librdkafka.redist.2.8.0/build/native/lib/win/x64/win-x64-Release/v142/librdkafkacpp.lib"   # Link to the C++ API of librdkafka
+)
 
-# Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
-# If you are developing for iOS or macOS you should consider setting an
-# explicit, fixed bundle identifier manually though.
-if(${QT_VERSION} VERSION_LESS 6.1.0)
-  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.Kafka-Visualizer)
-endif()
+
+# Set target properties (Bundle and executable settings for macOS and Windows)
 set_target_properties(Kafka-Visualizer PROPERTIES
-    ${BUNDLE_ID_OPTION}
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
 
+# Install targets
 include(GNUInstallDirs)
 install(TARGETS Kafka-Visualizer
     BUNDLE DESTINATION .
@@ -65,6 +71,7 @@ install(TARGETS Kafka-Visualizer
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
+# Finalize executable for Qt6 (if using Qt6)
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(Kafka-Visualizer)
 endif()
