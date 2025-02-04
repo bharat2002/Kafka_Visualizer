@@ -44,6 +44,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         kakfaconsumer.h kakfaconsumer.cpp
         inireader.h inireader.cpp
         config.ini
+        Images.qrc
     )
 else()
     add_executable(Kafka-Visualizer

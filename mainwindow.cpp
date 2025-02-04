@@ -38,12 +38,40 @@ void MainWindow::setupMenu()
 {
     qDebug() << "Setting up menu bar...";
 
+    QIcon ImgSaveIcon(QPixmap(":/icons/assests/Icons/icons8-save-48.png"));
+    QIcon ImgAboutIcon(QPixmap(":/icons/assests/Icons/icons8-about-48.png"));
+    QIcon ImgLoadIcon (QPixmap(":/icons/assests/Icons/icons8-load-from-file-48.png"));
+    QIcon ImgExitIcon(QPixmap(":/icons/assests/Icons/icons8-exit-48.png"));
+    QIcon ImgAlertIcon(QPixmap(":/icons/assests/Icons/icons8-alert-48.png"));
+    QIcon ImgKafkaIcon(QPixmap(":/icons/assests/Icons/icons8-apache-kafka-64.png"));
+    QIcon ImgconnectIcon(QPixmap(":/icons/assests/Icons/icons8-connect-48 (1).png"));
+    QIcon ImgDisconnectIcon(QPixmap(":/icons/assests/Icons/icons8-disconnect-48.png"));
+    QIcon ImgDarkModeIcon(QPixmap(":/icons/assests/Icons/icons8-dark-mode-48.png"));
+    QIcon ImgDashboardIcon(QPixmap(":/icons/assests/Icons/icons8-dashboard-48.png"));
+    QIcon ImgDeleteTopicIcon(QPixmap(":/icons/assests/Icons/icons8-delete-48.png"));
+    QIcon ImgCreateIcon(QPixmap(":/icons/assests/Icons/icons8-create-48.png"));
+    QIcon ImgGraphIcon(QPixmap(":/icons/assests/Icons/icons8-graph-48.png"));
+    QIcon ImgGuideIcon(QPixmap(":/icons/assests/Icons/icons8-guide-48.png"));
+    QIcon ImgModifyIcon(QPixmap(":/icons/assests/Icons/icons8-modify-48.png"));
+    QIcon ImgMonitoringIcon(QPixmap(":/icons/assests/Icons/icons8-monitoring-48.png"));
+    QIcon ImgNotificationIcon(QPixmap(":/icons/assests/Icons/icons8-notification-48.png"));
+    QIcon ImgPerformanceIcon(QPixmap(":/icons/assests/Icons/icons8-performance-48.png"));
+    QIcon ImgPingIcon(QPixmap(":/icons/assests/Icons/icons8-ping-48.png"));
+    QIcon ImgRefreshIcon(QPixmap(":/icons/assests/Icons/icons8-refresh-48.png"));
+    QIcon ImgSendIcon(QPixmap(":/icons/assests/Icons/icons8-send-48.png"));
+    QIcon ImgGroupIcon(QPixmap(":/icons/assests/Icons/icons8-staff-skin-type-7-48.png"));
+    QIcon ImgStatisticsIcon(QPixmap(":/icons/assests/Icons/icons8-statistics-48.png"));
+    QIcon ImgVisualizationIcon(QPixmap(":/icons/assests/Icons/icons8-tree-structure-48.png"));
     m_MenuBar = new QMenuBar(this);
     // File Menu
     QMenu* fileMenu = new QMenu("File", this);
     QAction* saveConfigAction = new QAction("Save Configuration", this);
+    saveConfigAction->setIcon(ImgSaveIcon);
     QAction* loadConfigAction = new QAction("Load Configuration", this);
+    loadConfigAction->setIcon(ImgLoadIcon);
     QAction* exitAction = new QAction("Exit", this);
+    exitAction->setIcon(ImgExitIcon);
+
     fileMenu->addAction(saveConfigAction);
     fileMenu->addAction(loadConfigAction);
     fileMenu->addSeparator();
@@ -57,6 +85,12 @@ void MainWindow::setupMenu()
     QAction* refreshMetadataAction = new QAction("Refresh Metadata", this);
     QAction* createTopicAction = new QAction("Create Topic", this);
     QAction* deleteTopicAction = new QAction("Delete Topic", this);
+    connectAction->setIcon(ImgKafkaIcon);
+    disconnectAction->setIcon(ImgDisconnectIcon);
+    refreshMetadataAction->setIcon(ImgRefreshIcon);
+    createTopicAction->setIcon(ImgCreateIcon);
+    deleteTopicAction->setIcon(ImgDeleteTopicIcon);
+
     kafkaMenu->addAction(connectAction);
     kafkaMenu->addAction(disconnectAction);
     kafkaMenu->addSeparator();
@@ -74,6 +108,13 @@ void MainWindow::setupMenu()
     QAction* messageVisualizationAction = new QAction("Message Visualization", this);
     QAction* metricsAction = new QAction("Metrics & Performance", this);
     QAction* darkModeAction = new QAction("Dark Mode", this);
+
+    dashboardAction->setIcon(ImgDashboardIcon);
+    topicMonitoringAction->setIcon(ImgMonitoringIcon);
+    consumerGroupsAction->setIcon(ImgGroupIcon);
+    messageVisualizationAction->setIcon(ImgVisualizationIcon);
+    metricsAction->setIcon(ImgStatisticsIcon);
+    darkModeAction->setIcon(ImgDarkModeIcon);
     darkModeAction->setCheckable(true); // Allow toggling dark mode
     viewMenu->addAction(dashboardAction);
     viewMenu->addAction(topicMonitoringAction);
@@ -90,6 +131,11 @@ void MainWindow::setupMenu()
     QAction* modifyTopicConfigAction = new QAction("Modify Topic Configuration", this);
     QAction* consumerLagGraphAction = new QAction("Consumer Lag Graph", this);
     QAction* throughputGraphAction = new QAction("Throughput Graph", this);
+    produceMessageAction->setIcon(ImgSendIcon);
+    modifyTopicConfigAction->setIcon(ImgModifyIcon);
+    throughputGraphAction->setIcon(ImgGraphIcon);
+    consumerLagGraphAction->setIcon(ImgPingIcon);
+
     toolsMenu->addAction(produceMessageAction);
     toolsMenu->addAction(modifyTopicConfigAction);
     toolsMenu->addSeparator();
@@ -101,6 +147,10 @@ void MainWindow::setupMenu()
     QMenu* notificationsMenu = new QMenu("Notifications", this);
     QAction* viewNotificationsAction = new QAction("View Notifications", this);
     QAction* configureAlertsAction = new QAction("Configure Alerts", this);
+
+    viewNotificationsAction->setIcon(ImgNotificationIcon);
+    configureAlertsAction->setIcon(ImgAlertIcon);
+
     notificationsMenu->addAction(viewNotificationsAction);
     notificationsMenu->addAction(configureAlertsAction);
     m_MenuBar->addMenu(notificationsMenu);
@@ -109,6 +159,10 @@ void MainWindow::setupMenu()
     QMenu* helpMenu = new QMenu("Help", this);
     QAction* userGuideAction = new QAction("User Guide", this);
     QAction* aboutAction = new QAction("About", this);
+
+    userGuideAction->setIcon(ImgGuideIcon);
+    aboutAction->setIcon(ImgAboutIcon);
+
     helpMenu->addAction(userGuideAction);
     helpMenu->addAction(aboutAction);
     m_MenuBar->addMenu(helpMenu);
