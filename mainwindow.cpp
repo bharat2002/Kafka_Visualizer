@@ -245,8 +245,10 @@ void MainWindow::loadConfiguration()
 void MainWindow::connectToKafka()
 {
     // Connect to a Kafka cluster
-    QString brokerAddress = QInputDialog::getText(this, "Connect to Kafka", "Enter Kafka Broker Address:");
+    std::string StoredBrokerAddress = m_Config->GetValue("Kafka","IP","");
+    QString brokerAddress = QInputDialog::getText(this, "Connect to Kafka", "Enter Kafka Broker Address:",QLineEdit::Normal,tr(StoredBrokerAddress.c_str()));
     if (!brokerAddress.isEmpty()) {
+        m_Config->SetValue("Kafka","IP",brokerAddress.toStdString());
         // Logic to connect to Kafka using librdkafka
         qDebug() << "Connecting to Kafka broker:" << brokerAddress;
     }

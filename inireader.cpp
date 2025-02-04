@@ -52,3 +52,17 @@ short IniReader::ParseFile() {
     }
     return lnReturn;
 }
+
+short IniReader::SetValue(const std::string& section, const std::string& key, const std::string Value)
+{
+    short lnReturn = -1;
+    if(data.end() != data.find(section))
+    {
+        auto Iterator = data[section].find(key);
+        if(data[section].end() != Iterator )
+        {
+            Iterator->second = Value;
+            lnReturn = 0;
+        }
+    }
+}
