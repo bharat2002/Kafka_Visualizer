@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     if(0 != m_Config->ParseFile())
     {
         QMessageBox::critical(this, "Error Opening Config File","Config Loading Failed. Please check config file present or not.");
+        m_Config = nullptr;
     }
 
 }
@@ -192,7 +193,6 @@ void MainWindow::setupMenu()
     connect(configureAlertsAction, &QAction::triggered, this, &MainWindow::configureAlerts);
     connect(userGuideAction, &QAction::triggered, this, &MainWindow::openUserGuide);
     connect(aboutAction, &QAction::triggered, this, &MainWindow::showAboutDialog);
-
 }
 
 
@@ -200,9 +200,23 @@ void MainWindow::saveConfiguration()
 {
     // Save Kafka broker/topic configurations to a file
     QString filePath = QFileDialog::getSaveFileName(this, "Save Configuration", "", "Config Files (*.ini)");
-    if (!filePath.isEmpty()) {
-        // Save configuration logic here
+    if (!filePath.isEmpty() ||
+        nullptr != m_Config)
+    {
+        QFile FileToSave(filePath,this);
+        std::ostringstream ssDataToWrite("");
+        ssDataToWrite<<"[Kafka]\nIP=";
+        ssDataToWrite<<m_Config->GetValue("Kafka","IP","")<<"\nPORT="<<m_Config->GetValue("Kafka","PORT","")<<'\n'<<'\n';
+        ssDataToWrite<<"[ZooKeeper]\nIP=";
+        ssDataToWrite<<m_Config->GetValue("ZooKeeper","IP","")<<"\nPORT="<<m_Config->GetValue("ZooKeeper","PORT","");
+        FileToSave.open(QFile::WriteOnly);
+        FileToSave.resize(filePath,0);
+        FileToSave.write(ssDataToWrite.str().c_str());
         qDebug() << "Configuration saved to:" << filePath;
+    }
+    else
+    {
+        QMessageBox::critical(this, "Config Error","Either No Config File Loaded or No File Selected.");
     }
 }
 
@@ -210,8 +224,20 @@ void MainWindow::loadConfiguration()
 {
     // Load Kafka broker/topic configurations from a file
     QString filePath = QFileDialog::getOpenFileName(this, "Load Configuration", "", "Config Files (*.ini)");
+    IniReader* newConfig = new IniReader(filePath.toStdString().c_str());
     if (!filePath.isEmpty()) {
-        // Load configuration logic here
+        if(0 != newConfig->ParseFile())
+        {
+            delete newConfig;
+            newConfig = nullptr;
+            QMessageBox::critical(this,"Wrong File Passed","Error Parsing File.Check the file again.");
+        }
+        else
+        {
+            delete m_Config;
+            m_Config = newConfig;
+            QMessageBox::information(this, "File Load Success","Config Loading Success.");
+        }
         qDebug() << "Configuration loaded from:" << filePath;
     }
 }
