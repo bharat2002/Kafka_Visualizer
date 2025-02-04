@@ -13,6 +13,7 @@ public:
     std::string GetValue(const std::string& section, const std::string& key, const std::string& defaultValue = "") const;
 
     short ParseFile();
+    short SetValue(const std::string& section, const std::string& key, const std::string Value);
 
 private:
     std::unordered_map<std::string, std::unordered_map<std::string, std::string>> data;
