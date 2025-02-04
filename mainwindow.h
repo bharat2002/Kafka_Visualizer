@@ -8,6 +8,7 @@
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QDesktopServices>
+#include <QFile>
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -44,7 +45,7 @@ public:
     void openUserGuide();
     void showAboutDialog();
 private:
-    IniReader* m_Config;
+    IniReader* m_Config=nullptr;
     Ui::MainWindow *ui;
     QMenuBar* m_MenuBar= nullptr;
     void setupMenu();

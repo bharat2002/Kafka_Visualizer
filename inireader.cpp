@@ -19,6 +19,7 @@ short IniReader::ParseFile() {
     short lnReturn = -1;
     std::ifstream file(m_strConfigFile);
     std::string line, section, key, value;
+    bool isFileEmpty = true;
     if(file.is_open())
     {
         while (std::getline(file, line)) {
@@ -36,11 +37,16 @@ short IniReader::ParseFile() {
                     value = line.substr(pos + 1);
                     data[section][key] = value;
                 }
+                isFileEmpty=false;
             }
         }
         lnReturn=0;
     }
     else
+    {
+        lnReturn = -1;
+    }
+    if(isFileEmpty)
     {
         lnReturn = -1;
     }
