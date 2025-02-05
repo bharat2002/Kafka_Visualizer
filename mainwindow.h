@@ -10,6 +10,7 @@
 #include <QDesktopServices>
 #include <QFile>
 #include "ckafkainputdialog.h"
+#include "kakfaconsumer.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -51,5 +52,8 @@ private:
     QMenuBar* m_MenuBar= nullptr;
     void setupMenu();
     QTabWidget *tabWidget;
+    int m_ConsumerCount = 0;
+    int m_ProducerCount = 0;
+
 };
 #endif // MAINWINDOW_H

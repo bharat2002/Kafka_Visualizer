@@ -46,6 +46,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         config.ini
         Images.qrc
         ckafkainputdialog.h ckafkainputdialog.cpp
+        ConsumerTab.h ConsumerTab.cpp
     )
 else()
     add_executable(Kafka-Visualizer
