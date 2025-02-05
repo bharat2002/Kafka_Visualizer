@@ -7,14 +7,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     tabWidget = new QTabWidget(this);
-
     // Add tabs to the QTabWidget
     tabWidget->addTab(new QWidget(), "Dashboard");
     tabWidget->addTab(new QWidget(), "Topic Monitoring");
     tabWidget->addTab(new QWidget(), "Consumer Groups");
     tabWidget->addTab(new QWidget(), "Message Visualization");
     tabWidget->addTab(new QWidget(), "Metrics & Performance");
-
     // Set the QTabWidget as the central widget of the main window
     this->setCentralWidget(tabWidget);
     setupMenu();
