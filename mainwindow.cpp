@@ -246,11 +246,24 @@ void MainWindow::connectToKafka()
 {
     // Connect to a Kafka cluster
     std::string StoredBrokerAddress = m_Config->GetValue("Kafka","IP","");
-    QString brokerAddress = QInputDialog::getText(this, "Connect to Kafka", "Enter Kafka Broker Address:",QLineEdit::Normal,tr(StoredBrokerAddress.c_str()));
-    if (!brokerAddress.isEmpty()) {
-        m_Config->SetValue("Kafka","IP",brokerAddress.toStdString());
-        // Logic to connect to Kafka using librdkafka
-        qDebug() << "Connecting to Kafka broker:" << brokerAddress;
+    std::string StoredBrokerPort = m_Config->GetValue("Kafka", "PORT","");
+    std::string StoredZookeeperAddress = m_Config->GetValue("ZooKeeper","IP","");
+    std::string StoredZookeeperPort = m_Config->GetValue("ZooKeeper", "PORT","");
+    CKafkaInputDialog DlgConnectionInput;
+    DlgConnectionInput.setBrokerPortText(StoredBrokerPort);
+    DlgConnectionInput.setBrokerIPText(StoredBrokerAddress);
+    DlgConnectionInput.setZookeeperPortText(StoredZookeeperPort);
+    DlgConnectionInput.setZookeeperIPText(StoredZookeeperAddress);
+    if(QDialog::Accepted==DlgConnectionInput.exec())
+    {
+        m_Config->SetValue("Kafka","IP",DlgConnectionInput.GetBrokerIP().toStdString());
+        m_Config->SetValue("Kafka","PORT",DlgConnectionInput.GetBrokerPort().toStdString());
+        m_Config->SetValue("ZooKeeper","IP",DlgConnectionInput.GetZookeeperIP().toStdString());
+        m_Config->SetValue("ZooKeeper","PORT",DlgConnectionInput.GetZookeeperPort().toStdString());
+    }
+    else
+    {
+        //
     }
 }
 

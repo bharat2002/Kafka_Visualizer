@@ -45,6 +45,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         inireader.h inireader.cpp
         config.ini
         Images.qrc
+        ckafkainputdialog.h ckafkainputdialog.cpp
     )
 else()
     add_executable(Kafka-Visualizer
