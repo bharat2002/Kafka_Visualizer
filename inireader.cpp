@@ -56,13 +56,22 @@ short IniReader::ParseFile() {
 short IniReader::SetValue(const std::string& section, const std::string& key, const std::string Value)
 {
     short lnReturn = -1;
-    if(data.end() != data.find(section))
+    if(data.end() == data.find(section))
     {
-        auto Iterator = data[section].find(key);
-        if(data[section].end() != Iterator )
-        {
-            Iterator->second = Value;
-            lnReturn = 0;
-        }
+        data[section] = std::unordered_map<std::string, std::string>();
     }
+
+    auto Iterator = data[section].find(key);
+    if(data[section].end() != Iterator )
+    {
+        Iterator->second = Value;
+        lnReturn = 0;
+    }
+    else
+    {
+        data[section][key] = Value;
+        lnReturn = 0;
+    }
+
+    return lnReturn;
 }

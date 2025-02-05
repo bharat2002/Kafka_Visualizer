@@ -9,6 +9,7 @@
 #include <QInputDialog>
 #include <QDesktopServices>
 #include <QFile>
+#include "ckafkainputdialog.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
