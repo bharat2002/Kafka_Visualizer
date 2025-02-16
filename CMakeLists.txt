@@ -33,6 +33,8 @@ set(PROJECT_SOURCES
     mainwindow.h
     mainwindow.ui
     kakfaconsumer.cpp
+    dashboard.cpp
+    dashboard.h
     kakfaconsumer.h
 )
 
@@ -47,6 +49,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         Images.qrc
         ckafkainputdialog.h ckafkainputdialog.cpp
         ConsumerTab.h ConsumerTab.cpp
+        dashboard.h dashboard.cpp
+        Defines.h
     )
 else()
     add_executable(Kafka-Visualizer
@@ -59,6 +63,7 @@ endif()
 target_link_libraries(Kafka-Visualizer PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets      # Link to the C API of librdkafka
    "C:/Users/bpali/Downloads/librdkafka.redist.2.8.0/build/native/lib/win/x64/win-x64-Release/v142/librdkafkacpp.lib"   # Link to the C++ API of librdkafka
+    "C:/Users/bpali/Downloads/librdkafka.redist.2.8.0/build/native/lib/win/x64/win-x64-Release/v142/librdkafka.lib"
 )
 
 

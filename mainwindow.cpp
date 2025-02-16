@@ -1,14 +1,22 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-
+#include "dashboard.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     tabWidget = new QTabWidget(this);
+
+    m_Config = new IniReader("../../config.ini");
+    if(0 != m_Config->ParseFile())
+    {
+        QMessageBox::critical(this, "Error Opening Config File","Config Loading Failed. Please check config file present or not.");
+        m_Config = nullptr;
+    }
+    Dashboard* dashboard =  new Dashboard(this, m_Config->GetValue("Kafka","IP"),m_Config->GetValue("Kafka","PORT"));
     // Add tabs to the QTabWidget
-    tabWidget->addTab(new QWidget(), "Dashboard");
+    tabWidget->addTab(dashboard, "Dashboard");
     tabWidget->addTab(new QWidget(), "Topic Monitoring");
     tabWidget->addTab(new QWidget(), "Consumer Groups");
     tabWidget->addTab(new QWidget(), "Message Visualization");
@@ -18,12 +26,6 @@ MainWindow::MainWindow(QWidget *parent)
     setupMenu();
     this->setWindowTitle("Kafka Visualizer");
     this->setWindowState(Qt::WindowMaximized);
-    m_Config = new IniReader("../../config.ini");
-    if(0 != m_Config->ParseFile())
-    {
-        QMessageBox::critical(this, "Error Opening Config File","Config Loading Failed. Please check config file present or not.");
-        m_Config = nullptr;
-    }
 
 }
 
