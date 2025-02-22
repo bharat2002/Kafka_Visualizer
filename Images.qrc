@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>assests/Icons/icons8-about-48.png</file>
+        <file>assests/Icons/icons8-alert-48.png</file>
+        <file>assests/Icons/icons8-apache-kafka-64.png</file>
+        <file>assests/Icons/icons8-connect-48 (1).png</file>
+        <file>assests/Icons/icons8-connect-48.png</file>
+        <file>assests/Icons/icons8-create-48.png</file>
+        <file>assests/Icons/icons8-dark-mode-48.png</file>
+        <file>assests/Icons/icons8-dashboard-48.png</file>
+        <file>assests/Icons/icons8-delete-48.png</file>
+        <file>assests/Icons/icons8-disconnect-48.png</file>
+        <file>assests/Icons/icons8-graph-48.png</file>
+        <file>assests/Icons/icons8-guide-48.png</file>
+        <file>assests/Icons/icons8-modify-48.png</file>
+        <file>assests/Icons/icons8-monitoring-48.png</file>
+        <file>assests/Icons/icons8-notification-48.png</file>
+        <file>assests/Icons/icons8-performance-48.png</file>
+        <file>assests/Icons/icons8-ping-48.png</file>
+        <file>assests/Icons/icons8-refresh-48.png</file>
+        <file>assests/Icons/icons8-save-48.png</file>
+        <file>assests/Icons/icons8-send-48.png</file>
+        <file>assests/Icons/icons8-staff-skin-type-7-48.png</file>
+        <file>assests/Icons/icons8-statistics-48.png</file>
+        <file>assests/Icons/icons8-exit-48.png</file>
+        <file>assests/Icons/icons8-tree-structure-48.png</file>
+        <file>assests/Icons/icons8-load-from-file-48.png</file>
+    </qresource>
+</RCC>
