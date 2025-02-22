@@ -39,6 +39,7 @@ Dashboard::Dashboard(QWidget *parent, std::string a_IP, std::string a_port) : QW
     config = RdKafka::Conf::create(RdKafka::Conf::CONF_GLOBAL);
     std::string Errstr;
     config->set(strMetaDataBrokerList, a_IP+":"+a_port, Errstr);
+    config->set("group.id","test",Errstr);
     if(Errstr.empty())
     {
         QMessageBox::information(this, QString::fromStdString(Errstr),QString::fromStdString(Errstr));
@@ -74,7 +75,7 @@ void Dashboard::updateMetrics() {
         std::cerr << "Failed to create consumer" << std::endl;
         return;
     }
-    if (tempConsumer->metadata(true, nullptr, &metadata, 5000) == RdKafka::ERR_NO_ERROR) {
+    if (tempConsumer->metadata(true, nullptr, &metadata, 500) == RdKafka::ERR_NO_ERROR) {
         clusterIdLabel->setText("Cluster ID: " + QString::fromStdString(metadata->orig_broker_name()));
         totalBrokersLabel->setText("Total Brokers: " + QString::number(metadata->brokers()->size()));
 
@@ -90,6 +91,10 @@ void Dashboard::updateMetrics() {
                 controllerBrokerLabel->setText("Controller Broker: " + QString::number(broker->id()));
             }
         }
+    }
+    else
+    {
+        QMessageBox::information(this,"Eror connection", "Error connecting ,Kafka Broker Down");
     }
     brokerTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 

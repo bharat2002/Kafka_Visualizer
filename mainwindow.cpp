@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
         m_Config = nullptr;
     }
     Dashboard* dashboard =  new Dashboard(this, m_Config->GetValue("Kafka","IP"),m_Config->GetValue("Kafka","PORT"));
+    TopicMonitoringTab* TopicMonitoring = new TopicMonitoringTab(this);
     // Add tabs to the QTabWidget
     tabWidget->addTab(dashboard, "Dashboard");
     tabWidget->addTab(new QWidget(), "Topic Monitoring");
