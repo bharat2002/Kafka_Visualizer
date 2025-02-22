@@ -1,34 +1,29 @@
-#ifndef TOPICMONITORINGTAB_H
-#define TOPICMONITORINGTAB_H
+#ifndef TOPICMONITORING_H
+#define TOPICMONITORING_H
 
 #include <QWidget>
-#include <QTableWidget>
+#include <QComboBox>
+#include "Defines.h"
+#include "kakfaconsumer.h"
 #include <QVBoxLayout>
 #include <QTimer>
-#include <QtCharts/qchartview.h>
-#include <QtCharts/qlineseries.h>
-#include <librdkafka/rdkafkacpp.h>
-
-
-
-class TopicMonitoringTab : public QWidget {
+#include <QTableWidget>
+class TopicMonitoring : public QWidget
+{
     Q_OBJECT
-
-public:
-    explicit TopicMonitoringTab(QWidget *parent = nullptr);
-    ~TopicMonitoringTab();
-
 private slots:
-    void updateTopicMetrics();
-
+    void onNewTopic();
+    void handleNewMessage(const std::string &topic, const std::string &message);
+    void handleTopicSelection(const QString &topic);
+public:
+    explicit TopicMonitoring(QWidget *parent = nullptr,std::string a_IP=strLocalhost, std::string a_port=strdefaultBrokerport);
 private:
-    QTableWidget *topicTable;
-    QChartView *chartView;
-    QLineSeries *messageRateSeries;
-    QTimer *updateTimer;
-
-    RdKafka::KafkaConsumer* consumer;
-    RdKafka::Conf* config;
+    KafkaConsumer* m_kafkaconsumer;
+    QComboBox* m_TopicDropdown;
+    QTimer* topicUpdateTimer;
+    std::string currentTopic;
+    QTableWidget *messagesTable;
+signals:
 };
 
-#endif // TOPICMONITORINGTAB_H
+#endif // TOPICMONITORING_H

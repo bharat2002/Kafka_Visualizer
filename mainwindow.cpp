@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "dashboard.h"
+#include "topicmonitoring.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -15,10 +16,10 @@ MainWindow::MainWindow(QWidget *parent)
         m_Config = nullptr;
     }
     Dashboard* dashboard =  new Dashboard(this, m_Config->GetValue("Kafka","IP"),m_Config->GetValue("Kafka","PORT"));
-    TopicMonitoringTab* TopicMonitoring = new TopicMonitoringTab(this);
+    TopicMonitoring* topicMonitoringTab = new TopicMonitoring(this,m_Config->GetValue("Kafka","IP"),m_Config->GetValue("Kafka","PORT") );
     // Add tabs to the QTabWidget
     tabWidget->addTab(dashboard, "Dashboard");
-    tabWidget->addTab(new QWidget(), "Topic Monitoring");
+    tabWidget->addTab(topicMonitoringTab, "Topic Monitoring");
     tabWidget->addTab(new QWidget(), "Consumer Groups");
     tabWidget->addTab(new QWidget(), "Message Visualization");
     tabWidget->addTab(new QWidget(), "Metrics & Performance");

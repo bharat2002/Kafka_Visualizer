@@ -12,7 +12,7 @@ public:
     explicit CConsumerTab(QWidget *parent = nullptr);
 private:
     long long m_nMessageCount = 0;
-    CKafkaConsumer* m_KafkaConusmer = nullptr;
+    KafkaConsumer* m_KafkaConusmer = nullptr;
     QArrayData* m_DataTypeArray = nullptr;
 
 signals:

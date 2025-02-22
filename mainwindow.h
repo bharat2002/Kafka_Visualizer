@@ -11,7 +11,7 @@
 #include <QFile>
 #include "ckafkainputdialog.h"
 #include "kakfaconsumer.h"
-#include "topicmonitoring.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
