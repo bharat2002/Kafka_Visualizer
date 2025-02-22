@@ -1,6 +1,6 @@
 #ifndef KAKFACONSUMER_H
 #define KAKFACONSUMER_H
-#include <rdkafkacpp.h>
+#include <librdkafka/rdkafkacpp.h>
 #include "inireader.h"
 // #include <rdkafka.h>
 

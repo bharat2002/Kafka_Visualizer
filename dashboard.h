@@ -2,11 +2,11 @@
 #define DASHBOARD_H
 #include <QLabel>
 #include <QTableWidget>
-#include <rdkafkacpp.h>
+#include <librdkafka/rdkafkacpp.h>
 #include <QTimer>
 #include <QWidget>
 #include "Defines.h"
-#include <rdkafkacpp.h>
+#include <librdkafka/rdkafka.h>
 class Dashboard : public QWidget
 {
     Q_OBJECT

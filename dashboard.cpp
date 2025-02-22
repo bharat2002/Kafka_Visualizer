@@ -3,7 +3,12 @@
 #include <QVBoxLayout>
 #include <iostream>
 #include <qmessagebox.h>
+#include <librdkafka/rdkafkacpp.h>
 
+
+extern "C" {
+#include <librdkafka/rdkafka.h>
+}
 // Constructor
 Dashboard::Dashboard(QWidget *parent, std::string a_IP, std::string a_port) : QWidget(parent) {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
