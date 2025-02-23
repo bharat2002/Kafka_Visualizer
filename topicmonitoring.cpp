@@ -79,10 +79,11 @@ TopicMonitoring::TopicMonitoring(QWidget *parent,std::string a_IP, std::string a
     mainLayout->addWidget(m_TopicDescription,0,Qt::AlignHCenter);
     mainLayout->addWidget(partitionTree);
 
-    connect(m_kafkaconsumer,&KafkaConsumer::newTopicDetected,this,&TopicMonitoring::onNewTopic);
+    // connect(m_kafkaconsumer,&KafkaConsumer::newTopicDetected,this,&TopicMonitoring::onNewTopic);
     connect(m_kafkaconsumer, &KafkaConsumer::newMessageReceived, this, &TopicMonitoring::handleNewMessage);
     connect(m_TopicDropdown, &QComboBox::currentTextChanged, this, &TopicMonitoring::handleTopicSelection);
-    connect(m_TimerRefreshTopics, &QTimer::timeout, this, &TopicMonitoring::onNewTopic );
+    connect(m_TimerRefreshTopics, &QTimer::timeout, m_topicFetcher, &TopicFetcher::fetchTopics);
+    connect(m_topicFetcher,&TopicFetcher::topicsFetched,this,&TopicMonitoring::onNewTopic);
     connect(m_TimerRefreshPartitions,&QTimer::timeout,this, &TopicMonitoring::UpdatePartitionList);
     m_TimerRefreshTopics->start(5000);
     // m_TimerRefreshPartitions->start(1000);
@@ -90,7 +91,7 @@ TopicMonitoring::TopicMonitoring(QWidget *parent,std::string a_IP, std::string a
     // updatePartitionTree("testtopic");
 }
 
-void TopicMonitoring::onNewTopic()
+void TopicMonitoring::onNewTopic(std::vector<std::string> topics)
 {
     m_TopicDropdown->clear();
     for(std::string topic : m_kafkaconsumer->getTopicList())

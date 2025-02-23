@@ -35,7 +35,7 @@ public slots:
     }
 
 signals:
-    void topicsFetched(std::vector<std::string>&topics);
+    void topicsFetched(std::vector<std::string> topics);
 
 private:
     KafkaConsumer* m_consumer;

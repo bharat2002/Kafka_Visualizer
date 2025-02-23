@@ -17,7 +17,7 @@ class TopicMonitoring : public QWidget
 {
     Q_OBJECT
 private slots:
-    void onNewTopic();
+    void onNewTopic(std::vector<std::string> topics);
     void handleNewMessage(const std::string &topic, const std::string &message);
     void handleTopicSelection(const QString &topic);
     void updatePartitionTree(const QString &topic);
