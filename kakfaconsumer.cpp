@@ -1,5 +1,6 @@
 #include "kakfaconsumer.h"
 #include <iostream>
+#include <qdebug.h>
 
 KafkaConsumer::KafkaConsumer(const std::string brokers,std::string port, QObject *parent) : QObject(parent), brokers(brokers) {
     std::string err;
@@ -51,4 +52,45 @@ void KafkaConsumer::stopConsumerForTopic(const std::string &topic) {
         topicConsumers.erase(topic);
         emit topicRemoved(topic);
     }
+}
+
+void KafkaConsumer::getTopicsData(QMap<QString, QList<QList<QString>>> &topicData)
+{
+    RdKafka::Metadata *metadata;
+    topicData.clear();
+    if (globalConsumer->metadata(true, nullptr, &metadata, 100) == RdKafka::ERR_NO_ERROR) {
+        for (auto &topic : *metadata->topics()) {
+            QList<QList<QString>> PartitionList;
+            for(const RdKafka::PartitionMetadata* data : *topic->partitions())
+            {
+                QList<QString> ListData;
+                ListData.push_back(QString::number(data->id()));
+                ListData.push_back(QString::number(data->leader()));
+                QString replicas;
+                for(auto replica : *data->replicas())
+                {
+                    if(!replicas.isEmpty())
+                    {
+                        replicas.append(", ");
+                    }
+                    replicas.append(QString::number(replica));
+                }
+                ListData.push_back(replicas);
+                QString Isrs;
+                for(auto isrs : *data->isrs())
+                {
+                    if(!Isrs.isEmpty())
+                    {
+                        replicas.append(", ");
+                    }
+                    Isrs.append(QString::number(isrs));
+                }
+                ListData.push_back(Isrs);
+                // QString::number(data->id()),ListData;
+                PartitionList.push_back(ListData);
+            }
+            topicData.insert(QString::fromStdString(topic->topic()),PartitionList);
+        }
+    }
+    delete metadata;
 }

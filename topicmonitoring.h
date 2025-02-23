@@ -12,7 +12,7 @@
 #include <QLabel>
 #include <QGroupBox>
 #include <QTreeWidget>
-
+#include "TopicFetcher.h"
 class TopicMonitoring : public QWidget
 {
     Q_OBJECT
@@ -27,6 +27,7 @@ public:
     explicit TopicMonitoring(QWidget *parent = nullptr,std::string a_IP=strLocalhost, std::string a_port=strdefaultBrokerport);
 private:
     KafkaConsumer* m_kafkaconsumer;
+    TopicFetcher* m_topicFetcher;
     QComboBox* m_TopicDropdown;
     QTimer* topicUpdateTimer;
     std::string currentTopic;

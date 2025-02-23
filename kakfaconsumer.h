@@ -7,7 +7,8 @@
 #include <vector>
 #include <map>
 #include <memory>
-
+#include <QMap>
+#include<QList>
 class KafkaConsumer : public QObject {
     Q_OBJECT
 
@@ -18,6 +19,7 @@ public:
     std::vector<std::string> getTopicList();
     void startConsumerForTopic(const std::string &topic);
     void stopConsumerForTopic(const std::string &topic);
+    void getTopicsData(QMap<QString, QList<QList<QString>>> &topicData);
 
 signals:
     void newTopicDetected(const std::string &topic);

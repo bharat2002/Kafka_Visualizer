@@ -43,6 +43,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ConsumerTab.cpp
         Images.qrc
         topicmonitoring.h topicmonitoring.cpp
+        TopicFetcher.h
 
     )
 # Define target properties for Android with Qt 6 as:

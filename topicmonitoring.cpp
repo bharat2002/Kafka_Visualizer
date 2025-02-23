@@ -19,7 +19,9 @@ TopicMonitoring::TopicMonitoring(QWidget *parent,std::string a_IP, std::string a
     m_TopicName         = new QLabel(this);
     m_TimerRefreshPartitions =  new QTimer(this);
     m_TimerRefreshTopics = new QTimer(this);
-
+    m_topicFetcher = new TopicFetcher(m_kafkaconsumer,this);
+    QThread* fetchThread = new QThread(this);
+    m_topicFetcher->moveToThread(fetchThread);
     // m_partitionId       = new QLabel(this);
     // m_Leader            = new QLabel(this);
     // m_Replicas          = new QLabel(this);
@@ -83,7 +85,9 @@ TopicMonitoring::TopicMonitoring(QWidget *parent,std::string a_IP, std::string a
     connect(m_TimerRefreshTopics, &QTimer::timeout, this, &TopicMonitoring::onNewTopic );
     connect(m_TimerRefreshPartitions,&QTimer::timeout,this, &TopicMonitoring::UpdatePartitionList);
     m_TimerRefreshTopics->start(5000);
-    m_TimerRefreshPartitions->start(1000);
+    // m_TimerRefreshPartitions->start(1000);
+    // UpdatePartitionList();
+    // updatePartitionTree("testtopic");
 }
 
 void TopicMonitoring::onNewTopic()
@@ -111,15 +115,15 @@ void TopicMonitoring::updatePartitionTree(const QString &topic) {
     partitionTree->clear();
 
     // Simulated data: topic -> partitions
-    topicData = {
-        {"Topic A", {{"0", "3", "Broker 1", "Broker 1, Broker 2"},
-                     {"1", "3", "Broker 2", "Broker 1, Broker 2, Broker 3"}}},
+    // topicData = {
+    //     {"Topic A", {{"0", "3", "Broker 1", "Broker 1, Broker 2"},
+    //                  {"1", "3", "Broker 2", "Broker 1, Broker 2, Broker 3"}}},
 
-        {"Topic B", {{"0", "2", "Broker 3", "Broker 3, Broker 4"},
-                     {"1", "2", "Broker 4", "Broker 3, Broker 4"}}},
+    //     {"Topic B", {{"0", "2", "Broker 3", "Broker 3, Broker 4"},
+    //                  {"1", "2", "Broker 4", "Broker 3, Broker 4"}}},
 
-        {"Topic C", {{"0", "1", "Broker 5", "Broker 5"}}}
-    };
+    //     {"Topic C", {{"0", "1", "Broker 5", "Broker 5"}}}
+    // };
 
     int partitionCount = topicData[topic].size();
     int maxReplication = 0;
@@ -145,8 +149,7 @@ void TopicMonitoring::filterPartitions(const QString &searchText) {
     }
 }
 
-
 void TopicMonitoring::UpdatePartitionList()
 {
-
+    m_kafkaconsumer->getTopicsData(topicData);
 }
