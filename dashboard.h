@@ -11,7 +11,7 @@ class Dashboard : public QWidget
 {
     Q_OBJECT
 public:
-     Dashboard(QWidget *parent = nullptr,std::string a_IP=strLocalhost, std::string a_port=strdefaultBrokerport);
+    Dashboard(QWidget *parent = nullptr,std::string a_IP=strLocalhost, std::string a_port=strdefaultBrokerport);
     QLabel *clusterIdLabel;
     QLabel *totalBrokersLabel;
     QLabel *activeBrokersLabel;
@@ -31,6 +31,7 @@ public:
     int getControllerBrokerId();
 private slots:
     void updateMetrics();
+    void UpdateUI(RdKafka::Metadata *metadata);
 signals:
 };
 

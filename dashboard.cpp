@@ -4,7 +4,8 @@
 #include <iostream>
 #include <qmessagebox.h>
 #include <librdkafka/rdkafkacpp.h>
-
+#include <qthread.h>
+#include "MetricesWorker.h"
 
 extern "C" {
 #include <librdkafka/rdkafka.h>
@@ -20,7 +21,7 @@ Dashboard::Dashboard(QWidget *parent, std::string a_IP, std::string a_port) : QW
     controllerBrokerLabel = new QLabel("Controller Broker: None", this);
     versionLabel = new QLabel("Kafka Version: Fetching...", this);
     zookeeperStatusLabel = new QLabel("Zookeeper Status: Checking...", this);
-
+    QThread* m_FetchMetaDataThread = new QThread(this);
     mainLayout->addWidget(clusterIdLabel);
     mainLayout->addWidget(totalBrokersLabel);
     mainLayout->addWidget(activeBrokersLabel);
@@ -44,12 +45,15 @@ Dashboard::Dashboard(QWidget *parent, std::string a_IP, std::string a_port) : QW
     {
         QMessageBox::information(this, QString::fromStdString(Errstr),QString::fromStdString(Errstr));
     }
+    MetricsWorker* m_MetricesObj = new MetricsWorker(config,this);
+    m_MetricesObj->moveToThread(m_FetchMetaDataThread);
     // Timer to update metrics
     updateTimer = new QTimer(this);
-    connect(updateTimer, &QTimer::timeout, this, &Dashboard::updateMetrics);
+    connect(updateTimer, &QTimer::timeout, m_MetricesObj, &MetricsWorker::fetchMetrics);
+    connect(m_MetricesObj,&MetricsWorker::metricsFetched,this,&Dashboard::UpdateUI);
     updateTimer->start(5000); // Update every 5 seconds
 
-    updateMetrics();
+    // updateMetrics();
 }
 
 // Destructor
@@ -71,9 +75,24 @@ void Dashboard::updateMetrics() {
         return;
     }
     if (tempConsumer->metadata(true, nullptr, &metadata, 500) == RdKafka::ERR_NO_ERROR) {
+        emit UpdateUI(metadata);
+    }
+    else
+    {
+        QMessageBox::information(this,"Eror connection", "Error connecting ,Kafka Broker Down");
+    }
+    brokerTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+
+    delete tempConsumer;
+}
+
+void Dashboard::UpdateUI(RdKafka::Metadata *metadata)
+{
+    if(nullptr != metadata)
+    {
         clusterIdLabel->setText("Cluster ID: " + QString::fromStdString(metadata->orig_broker_name()));
         totalBrokersLabel->setText("Total Brokers: " + QString::number(metadata->brokers()->size()));
-
 
         brokerTable->setRowCount(0);
         for (auto &broker : *metadata->brokers()) {
@@ -86,13 +105,6 @@ void Dashboard::updateMetrics() {
                 controllerBrokerLabel->setText("Controller Broker: " + QString::number(broker->id()));
             }
         }
+        delete metadata;
     }
-    else
-    {
-        QMessageBox::information(this,"Eror connection", "Error connecting ,Kafka Broker Down");
-    }
-    brokerTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    delete metadata;
-    delete tempConsumer;
 }

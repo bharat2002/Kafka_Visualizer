@@ -44,6 +44,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         Images.qrc
         topicmonitoring.h topicmonitoring.cpp
         TopicFetcher.h
+        MetricesWorker.h
 
     )
 # Define target properties for Android with Qt 6 as:
