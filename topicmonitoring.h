@@ -8,6 +8,9 @@
 #include <QVBoxLayout>
 #include <QTimer>
 #include <QTableWidget>
+#include <QGridLayout>
+#include <QLabel>
+#include <QGroupBox>
 class TopicMonitoring : public QWidget
 {
     Q_OBJECT
@@ -23,6 +26,12 @@ private:
     QTimer* topicUpdateTimer;
     std::string currentTopic;
     QTableWidget *messagesTable;
+    QLabel* m_TopicCountstr;
+    QLabel* m_TopicCount;
+    QLabel* m_DropDownLabel;
+    QLabel* m_TopicDescription;
+    QLabel* m_TopicName;
+    QGroupBox* m_DescriptionBox;
 signals:
 };
 
