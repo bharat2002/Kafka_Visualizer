@@ -40,15 +40,10 @@ Dashboard::Dashboard(QWidget *parent, std::string a_IP, std::string a_port) : QW
     std::string Errstr;
     config->set(strMetaDataBrokerList, a_IP+":"+a_port, Errstr);
     config->set("group.id","test",Errstr);
-    if(Errstr.empty())
+    if(!Errstr.empty())
     {
         QMessageBox::information(this, QString::fromStdString(Errstr),QString::fromStdString(Errstr));
     }
-    else
-    {
-        QMessageBox::information(this, QString::fromStdString(Errstr),QString::fromStdString(Errstr));
-    }
-
     // Timer to update metrics
     updateTimer = new QTimer(this);
     connect(updateTimer, &QTimer::timeout, this, &Dashboard::updateMetrics);
